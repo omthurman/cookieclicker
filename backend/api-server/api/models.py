@@ -1,7 +1,5 @@
 # -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
+
 
 from datetime import datetime
 
@@ -21,8 +19,7 @@ class Users(db.Model):
     password = db.Column(db.Text())
     jwt_auth_active = db.Column(db.Boolean())
     date_joined = db.Column(db.DateTime(), default=datetime.utcnow)
-    cookie_balance = db.Column(db.String(64))
-
+    bankbalance = db.Column(db.String(255))
 
     def __repr__(self):
         return f"User {self.username}"

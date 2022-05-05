@@ -16,6 +16,7 @@ import {
 import Home from "./Home";
 import Com from "./com";
 import TestGrid from "./grid";
+import Login from "./login";
   
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/" element={<Home/>} />
           <Route path="/Com" element={<Com/>} />
           <Route path="/grid" element={<TestGrid/>} />
+          <Route path="/login" element={<Login/>} />
 
             
 

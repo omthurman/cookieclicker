@@ -15,7 +15,7 @@ import TestGrid from "./grid";
 import munch from "./munch.mp3";
 // import Input from "react-bootstrap/Input";
 import Cookies from "js-cookie";
-
+import Login from "./login";
 
 
 // function incrementValue() {
@@ -302,8 +302,10 @@ const Home = () => {
           <div class="row" style={{ height: "5vh" }}>
           <div className="col" style={{ background: "blue", justifyContent: "center" }}>
                 <Link to="/" className="btn">Home</Link>
-                <Link className="btn" to="/Com">Com</Link>
+                <Link className="btn" to="/Com">Register</Link>
+                <Link className="btn" to="/login">Login</Link>
                 <Link className="btn" to="/grid">TestGrid</Link>
+
                 <button onClick={() => reset_fish()} class="btn" type="button" className="btn btn-primary">Reset Cookies</button>
                 <button onClick={() => Reset_Array()} class="btn" type="button" className="btn btn-primary">Reset Upgrade Array</button>
           </div>

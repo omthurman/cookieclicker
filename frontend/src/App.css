@@ -41,7 +41,7 @@
 
 
 .App-header {
-  background-color: #ca83d8;
+  background-color: #469beb;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -50,6 +50,8 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+
 
 
 .CookieCounter {

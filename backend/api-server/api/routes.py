@@ -1,7 +1,4 @@
 # -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
 
 from datetime import datetime, timezone, timedelta
 
@@ -22,15 +19,19 @@ rest_api = Api(version="1.0", title="Users API")
     Flask-Restx models for api request and response data
 """
 
+#looks like this is just setting up routes. model to json data.
 signup_model = rest_api.model('SignUpModel', {"username": fields.String(required=True, min_length=2, max_length=32),
                                               "email": fields.String(required=True, min_length=4, max_length=64),
-                                              "password": fields.String(required=True, min_length=4, max_length=16)
+                                              "password": fields.String(required=True, min_length=4, max_length=16),
+                                              "bankbalance": fields.String(required=True, min_length=1, max_length=16)
                                               })
 
 login_model = rest_api.model('LoginModel', {"email": fields.String(required=True, min_length=4, max_length=64),
                                             "password": fields.String(required=True, min_length=4, max_length=16)
                                             })
 
+
+# what is this???    -------   This could be basis for editing entries.....
 user_edit_model = rest_api.model('UserEditModel', {"userID": fields.String(required=True, min_length=1, max_length=32),
                                                    "username": fields.String(required=True, min_length=2, max_length=32),
                                                    "email": fields.String(required=True, min_length=4, max_length=64)
@@ -44,6 +45,7 @@ user_edit_model = rest_api.model('UserEditModel', {"userID": fields.String(requi
    Helper function for JWT token required
 """
 
+#security measurers
 def token_required(f):
 
     @wraps(f)
@@ -86,6 +88,8 @@ def token_required(f):
 """
 
 
+
+#looks like this is how the data is processed once it is grabbed.
 @rest_api.route('/api/users/register')
 class Register(Resource):
     """
@@ -95,25 +99,34 @@ class Register(Resource):
     @rest_api.expect(signup_model, validate=True)
     def post(self):
 
+        #model
+        print(request.headers)
         req_data = request.get_json()
+        print(req_data)
 
         _username = req_data.get("username")
         _email = req_data.get("email")
         _password = req_data.get("password")
+        _bankbalance = req_data.get("bankbalance")
 
+        #checks for email
         user_exists = Users.get_by_email(_email)
         if user_exists:
             return {"success": False,
                     "msg": "Email already taken"}, 400
 
-        new_user = Users(username=_username, email=_email)
 
+        new_user = Users(username=_username, email=_email , bankbalance=_bankbalance)
+
+        #.set_password???
         new_user.set_password(_password)
         new_user.save()
 
         return {"success": True,
                 "userID": new_user.id,
                 "msg": "The user was successfully registered"}, 200
+
+
 
 
 @rest_api.route('/api/users/login')
@@ -140,7 +153,7 @@ class Login(Resource):
             return {"success": False,
                     "msg": "Wrong credentials."}, 400
 
-        # create access token uwing JWT
+        # create access token uwing JWT    ---      Lets clarify this
         token = jwt.encode({'email': _email, 'exp': datetime.utcnow() + timedelta(minutes=30)}, BaseConfig.SECRET_KEY)
 
         user_exists.set_jwt_auth_active(True)
@@ -152,6 +165,9 @@ class Login(Resource):
 
 
 @rest_api.route('/api/users/edit')
+
+
+# Not needed.
 class EditUser(Resource):
     """
        Edits User's username or password or both using 'user_edit_model' input
